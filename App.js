@@ -8,6 +8,7 @@ import DailyTips from './components/DailyTips';
 import CommonQuestions from './components/CommonQuestions';
 import Activities from './components/Activities';
 import SignUpScreen from './components/SignUpScreen';
+import { DocumentScreen } from './components/DocumentScreen';
 import './global';
 
 const AppNavigator = createStackNavigator(
@@ -50,6 +51,12 @@ const AppNavigator = createStackNavigator(
     },
     Games: {
       screen: Activities,
+      navigationOptions: {
+        title: 'Click Tips'
+      }
+    },
+    DocumentView: {
+      screen: DocumentScreen,
       navigationOptions: {
         title: 'Click Tips'
       }
