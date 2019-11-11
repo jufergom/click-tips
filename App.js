@@ -9,6 +9,7 @@ import CommonQuestions from './components/CommonQuestions';
 import Activities from './components/Activities';
 import SignUpScreen from './components/SignUpScreen';
 import { DocumentScreen } from './components/DocumentScreen';
+import PaymentScreen from './components/PaymentScreen';
 import './global';
 
 const AppNavigator = createStackNavigator(
@@ -41,6 +42,12 @@ const AppNavigator = createStackNavigator(
       screen: CommonQuestions,
       navigationOptions: {
         title: 'Click Tips'
+      }
+    },
+    Payment: {
+      screen: PaymentScreen,
+      navigationOptions: {
+        title: 'Pago'
       }
     },
     Tips: {

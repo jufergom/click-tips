@@ -15,6 +15,12 @@ export class DocumentScreen extends React.Component {
        }
    }
 
+   goToPayment() {
+     this.props.navigation.navigate('Payment', {
+       source: this.state.source
+     });
+   }
+
    render() {
        const { navigation } = this.props;
        return(
@@ -39,7 +45,7 @@ export class DocumentScreen extends React.Component {
                 price={'L. '+this.state.price}
                 info={['Contenido completo']}
                 button={{ title: 'Adquirir', icon: 'payment' }}
-                onButtonPress={ ()=>{ Linking.openURL(this.state.source)}}
+                onButtonPress={ ()=> {this.goToPayment()}}
             />
           </View>
        );
