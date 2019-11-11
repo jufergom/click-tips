@@ -9,14 +9,11 @@ export default class HomeScreen extends React.Component {
         super(props);
         this.state = {
             email: '',
-            password: '',
-            users: [
-                {name: 'Julio', email: 'julio@example.com', password: 'Julio', type: 'Normal', profession: 'null'},
-                {name: 'Fernando', email: 'fernando@example.com', password: 'Fernando', type: 'Professional', profession: 'Docente'}
-            ]
+            password: ''
         }
     }
 
+    //detele cookies
     async componentDidMount() {
         try {
             await AsyncStorage.removeItem('name');
@@ -33,20 +30,21 @@ export default class HomeScreen extends React.Component {
         this.setState(() => ({[name]: text}));
     }
 
+    //Searches the user and password in array and redirects to home component, creates cookies
     login = async () => {
         found = false;
-        for (index = 0; index < this.state.users.length; index++) {
-            if(this.state.email == this.state.users[index].email && this.state.password == this.state.users[index].password) {
+        for (index = 0; index < global.users.length; index++) {
+            if(this.state.email == global.users[index].email && this.state.password == global.users[index].password) {
                 found = true;
                 try {
-                    await AsyncStorage.setItem('name', this.state.users[index].name);
-                    await AsyncStorage.setItem('email', this.state.users[index].email);
-                    await AsyncStorage.setItem('type', this.state.users[index].type);
-                    if(this.state.users[index].type == 'Professional') {
-                        AsyncStorage.setItem('profession', this.state.users[index].profession);
+                    await AsyncStorage.setItem('name', global.users[index].name);
+                    await AsyncStorage.setItem('email', global.users[index].email);
+                    await AsyncStorage.setItem('type', global.users[index].type);
+                    if(global.users[index].type == 'Professional') {
+                        AsyncStorage.setItem('profession', global.users[index].profession);
                     }
                     this.props.navigation.navigate('Home');
-                } 
+                }
                 catch(error) {
                     console.log("Got an error");
                     console.log(error);
@@ -57,10 +55,16 @@ export default class HomeScreen extends React.Component {
             alert('Usuario y/o contraseña incorrectos');
     }
 
+    //go to home screen skipping login
     entrarDeOne() {
         this.props.navigation.navigate('Home');
     }
-    
+
+    //go to sign up screen
+    goToSignUp() {
+        this.props.navigation.navigate('SignUp');
+    }
+
     render() {
         return (
             <KeyboardAvoidingView style={style.container}>
@@ -93,6 +97,7 @@ export default class HomeScreen extends React.Component {
                 <Button
                     title="Sign Up"
                     buttonStyle={style.buttons}
+                    onPress={() => this.goToSignUp()}
                 />
                 <SocialIcon
                     title='Sign In With Facebook'
@@ -116,7 +121,7 @@ export default class HomeScreen extends React.Component {
 
 const style = StyleSheet.create({
     container:{
-        alignItems: 'center', 
+        alignItems: 'center',
         justifyContent: 'center'
     },
     buttons: {

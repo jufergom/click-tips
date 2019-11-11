@@ -7,6 +7,8 @@ import MyProfile from './components/MyProfile';
 import DailyTips from './components/DailyTips';
 import CommonQuestions from './components/CommonQuestions';
 import Activities from './components/Activities';
+import SignUpScreen from './components/SignUpScreen';
+import './global';
 
 const AppNavigator = createStackNavigator(
   {
@@ -14,6 +16,12 @@ const AppNavigator = createStackNavigator(
       screen: LoginScreen,
       navigationOptions: {
         header: null
+      }
+    },
+    SignUp: {
+      screen: SignUpScreen,
+      navigationOptions: {
+        title: 'Sign Up'
       }
     },
     Home: {
@@ -47,7 +55,7 @@ const AppNavigator = createStackNavigator(
       }
     }
   },
-  { 
+  {
     initialRouteName: 'Login',
     cardStyle: {
       backgroundColor: '#FF914C'
