@@ -74,7 +74,7 @@ export default class PaymentScreen extends React.Component {
                     selectedValue={this.state.month}
                     style={{height: 50, width: 300 }}
                     onValueChange={(itemValue, itemIndex) =>
-                        this.setState({type: itemValue})
+                        this.setState({month: itemValue})
                     }>
                     <Picker.Item label="Enero" value="january" />
                     <Picker.Item label="Febrero" value="february" />
@@ -93,7 +93,7 @@ export default class PaymentScreen extends React.Component {
                     selectedValue={this.state.year}
                     style={{height: 50, width: 300 }}
                     onValueChange={(itemValue, itemIndex) =>
-                        this.setState({type: itemValue})
+                        this.setState({year: itemValue})
                     }>
                     <Picker.Item label="2019" value="2019" />
                     <Picker.Item label="2020" value="2020" />
