@@ -10,6 +10,7 @@ import Activities from './components/Activities';
 import SignUpScreen from './components/SignUpScreen';
 import { DocumentScreen } from './components/DocumentScreen';
 import PaymentScreen from './components/PaymentScreen';
+import ProfileScreen from './components/ProfileScreen'
 import './global';
 
 const AppNavigator = createStackNavigator(
@@ -36,6 +37,12 @@ const AppNavigator = createStackNavigator(
       screen: MyProfile,
       navigationOptions: {
         title: 'Mi Perfil'
+      }
+    },
+    ProfessionalProfile: {
+      screen: ProfileScreen,
+      navigationOptions: {
+        title: 'Click Tips'
       }
     },
     Questions: {

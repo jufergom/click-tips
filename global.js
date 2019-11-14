@@ -12,6 +12,20 @@ global.users = [
     password: 'Fernando',
     type: 'Professional',
     profession: 'Docente'
+  },
+  {
+    name: 'Carl',
+    email: 'carl@example.com',
+    password: 'Carl',
+    type: 'Professional',
+    profession: 'Psicologo'
+  },
+  {
+    name: 'Smith',
+    email: 'smith@example.com',
+    password: 'Smith',
+    type: 'Professional',
+    profession: 'Psiquiatra'
   }
 ];
 
@@ -22,8 +36,8 @@ global.documents = [
     title: 'La Asertividad',
     description: 'La asertividad es una de las habilidades sociales basicas que nos permite relacionarnos con los demas desde el respeto a nosotros mismos y a los demas',
     source: 'https://drive.google.com/file/d/1nn40lRIV_e5QpLHBGRfIBVrxAVPx57i4/view?usp=sharing',
-    author: 'Smith',
-    price: 10
+    author: 'Carl',
+    price: 80
   },
   {
     id: 1,
@@ -32,7 +46,7 @@ global.documents = [
     description: 'Las emociones son señales de nuestro cerebro que se sienten en el cuerpo...',
     source: 'https://drive.google.com/file/d/1RQS-yvyL07RMsQ7VNaM03T_wxkxCpuCB/view?usp=sharing',
     author: 'Carl',
-    price: 10
+    price: 60
   },
   {
     id: 2,
@@ -40,8 +54,8 @@ global.documents = [
     title: 'Frases Positivas',
     description: 'La autovaloracion inicia a muy temprana edad. Cada dia es importante recordar...',
     source: 'https://drive.google.com/file/d/1ab43rW3o0M49SLcETfjYQG9BRQS5oSHm/view?usp=sharing',
-    author: 'Itachi',
-    price: 10
+    author: 'Smith',
+    price: 80
   },
   {
     id: 3,
@@ -50,7 +64,7 @@ global.documents = [
     description: 'Entendemos como motricidad la actuacionde un niño ante unas respuestas que implican...',
     source: 'https://drive.google.com/file/d/1W6zQ0Tnd3O4X9-4QLLgtvBWYN_ltZQ8g/view?usp=sharing',
     author: 'Carl',
-    price: 10
+    price: 120
   },
   {
     id: 4,
@@ -59,6 +73,6 @@ global.documents = [
     description: 'Programa de higiene de sueño para niños menores de cinco años.',
     source: 'https://drive.google.com/file/d/1rMDpLoDkQMdsrZrpPU_lp4DLkQn1oEYe/view?usp=sharing',
     author: 'Smith',
-    price: 10
+    price: 100
   }
 ];

@@ -46,7 +46,7 @@ export default class MyProfile extends React.Component {
             <View>
                 <ListItem
                     leftAvatar={{
-                        title: 'Julio',
+                        title: 'None',
                         source: { uri: 'https://banner2.cleanpng.com/20180410/ewq/kisspng-rendering-github-smile-emoji-5acc7bd86d37a8.4792946515233504884474.jpg'},
                         showEditButton: true,
                         size: 'xlarge'
@@ -55,7 +55,7 @@ export default class MyProfile extends React.Component {
                     subtitle={this.state.subtitle}
                     chevron
                 />
-                {this.state.normal ? 
+                {this.state.normal ?
                     <View style={style.container}>
                         <Button
                             title="Ayuda"
@@ -77,8 +77,8 @@ export default class MyProfile extends React.Component {
                             buttonStyle={style.buttons}
                         />
                     </View>
-                    
-                } 
+
+                }
             </View>
         );
     }
@@ -86,7 +86,7 @@ export default class MyProfile extends React.Component {
 
 const style = StyleSheet.create({
     container:{
-        alignItems: 'center', 
+        alignItems: 'center',
         justifyContent: 'center',
         marginTop: 40
     },

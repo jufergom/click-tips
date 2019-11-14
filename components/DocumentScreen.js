@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, ScrollView, Text, StyleSheet, Linking } from 'react-native'
-import { Button, Tile, PricingCard } from 'react-native-elements';
+import { View, ScrollView, StyleSheet, Linking } from 'react-native'
+import { Button, Tile, PricingCard, Text, Avatar } from 'react-native-elements';
 
 export class DocumentScreen extends React.Component {
    constructor(props) {
@@ -11,8 +11,23 @@ export class DocumentScreen extends React.Component {
           description: props.navigation.getParam('description', 'description'),
           source: props.navigation.getParam('source', 'source'),
           author: props.navigation.getParam('author', 'author'),
-          price: props.navigation.getParam('price', 'price')
+          price: props.navigation.getParam('price', 'price'),
+          free: false
        }
+   }
+
+   /*Search for the user's name in the global users array, in order
+   to pass all the professional's info to profile component, and go there */
+   seeProfessionalProfile() {
+     for(i = 0; i < global.users.length; i++) {
+       if(global.users[i].name == this.state.author) {
+         this.props.navigation.navigate('ProfessionalProfile', {
+           name: global.users[i].name,
+           profession: global.users[i].profession,
+           email: global.users[i].email
+         });
+       }
+     }
    }
 
    goToPayment() {
@@ -24,30 +39,29 @@ export class DocumentScreen extends React.Component {
    render() {
        const { navigation } = this.props;
        return(
-         <View>
+         <ScrollView>
            <Tile
               imageSrc={{uri: this.state.image}}
               title={this.state.title}
               contentContainerStyle={{ height: 70 }}
            >
-              <View
-                style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}
-              >
-                <Text>Autor: {this.state.author}</Text>
-              </View>
-              <View>
-                <Text>{this.state.description}</Text>
-              </View>
-            </Tile>
-            <PricingCard
-                color="#4f9deb"
-                title="Comprar"
-                price={'L. '+this.state.price}
-                info={['Contenido completo']}
-                button={{ title: 'Adquirir', icon: 'payment' }}
-                onButtonPress={ ()=> {this.goToPayment()}}
-            />
-          </View>
+           </Tile>
+           <Text h4>Autor: {this.state.author}</Text>
+
+           <Button
+              title="Ver perfil del autor"
+              onPress={() => {this.seeProfessionalProfile()}}
+           />
+           <Text>{this.state.description}</Text>
+           <PricingCard
+              color="#4f9deb"
+              title="Comprar"
+              price={'L. '+this.state.price}
+              info={['Contenido completo']}
+              button={{ title: 'Adquirir', icon: 'payment' }}
+              onButtonPress={ ()=> {this.goToPayment()}}
+           />
+         </ScrollView>
        );
    }
 }
