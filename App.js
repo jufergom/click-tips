@@ -11,6 +11,7 @@ import SignUpScreen from './components/SignUpScreen';
 import { DocumentScreen } from './components/DocumentScreen';
 import PaymentScreen from './components/PaymentScreen';
 import ProfileScreen from './components/ProfileScreen'
+import UploadDocument from './components/UploadDocument'
 import './global';
 
 const AppNavigator = createStackNavigator(
@@ -49,6 +50,12 @@ const AppNavigator = createStackNavigator(
       screen: CommonQuestions,
       navigationOptions: {
         title: 'Click Tips'
+      }
+    },
+    Upload: {
+      screen: UploadDocument,
+      navigationOptions: {
+        title: 'Subir documento'
       }
     },
     Payment: {

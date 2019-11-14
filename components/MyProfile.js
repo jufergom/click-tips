@@ -41,6 +41,11 @@ export default class MyProfile extends React.Component {
         }
     }
 
+    //navigates to UploadDocument component
+    uploadDocument() {
+      this.props.navigation.navigate('Upload');
+    }
+
     render() {
         return (
             <View>
@@ -75,6 +80,7 @@ export default class MyProfile extends React.Component {
                         <Button
                             title="Subir documento"
                             buttonStyle={style.buttons}
+                            onPress={() => this.uploadDocument()}
                         />
                     </View>
 
