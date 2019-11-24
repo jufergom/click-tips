@@ -1,3 +1,5 @@
+global.user = '';
+global.type = '';
 global.users = [
   {
     name: 'Julio',

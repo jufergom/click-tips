@@ -30,29 +30,27 @@ export default class HomeScreen extends React.Component {
         this.setState(() => ({[name]: text}));
     }
 
-    //Searches the user and password in array and redirects to home component, creates cookies
-    login = async () => {
-        found = false;
-        for (index = 0; index < global.users.length; index++) {
-            if(this.state.email == global.users[index].email && this.state.password == global.users[index].password) {
-                found = true;
-                try {
-                    await AsyncStorage.setItem('name', global.users[index].name);
-                    await AsyncStorage.setItem('email', global.users[index].email);
-                    await AsyncStorage.setItem('type', global.users[index].type);
-                    if(global.users[index].type == 'Professional') {
-                        AsyncStorage.setItem('profession', global.users[index].profession);
-                    }
-                    this.props.navigation.navigate('Home');
-                }
-                catch(error) {
-                    console.log("Got an error");
-                    console.log(error);
-                }
+    //Sends a post request to api rest, if requests status code is 200, redirect to homepage
+    login = () => {
+        let url = 'http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com/api/users/login';
+        let data = {email: this.state.email, password: this.state.password};
+
+        fetch(url, {
+            method: 'POST', // or 'PUT'
+            body: JSON.stringify(data), // data can be `string` or {object}!
+            headers:{
+              'Content-Type': 'application/json'
             }
-        }
-        if(!found)
-            alert('Usuario y/o contraseña incorrectos');
+        }).then(res => {
+            if(res.status == 200) {
+                global.user = this.state.email;
+                this.props.navigation.navigate('Home');
+            }
+            else {
+                alert('Usuario y/o contraseña incorrectos');
+            }
+        })
+        .catch(error => alert('Ha ocurrido un error al iniciar sesion'))
     }
 
     //go to home screen skipping login
