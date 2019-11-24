@@ -13,18 +13,6 @@ export default class HomeScreen extends React.Component {
         }
     }
 
-    //detele cookies
-    async componentDidMount() {
-        try {
-            await AsyncStorage.removeItem('name');
-            await AsyncStorage.removeItem('email');
-            await AsyncStorage.removeItem('type');
-            await AsyncStorage.removeItem('profession');
-        } catch(error) {
-            console.log(error);
-        }
-    }
-
     handleChange = (event, name) => {
         const { text } = event.nativeEvent;
         this.setState(() => ({[name]: text}));

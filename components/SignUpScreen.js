@@ -3,6 +3,7 @@ import { StyleSheet, KeyboardAvoidingView, AsyncStorage,
 Picker } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { Image, SocialIcon } from 'react-native-elements';
+import * as DocumentPicker from 'expo-document-picker';
 
 export default class SignUpScreen extends React.Component {
     constructor(props) {
@@ -12,7 +13,17 @@ export default class SignUpScreen extends React.Component {
             email: '',
             password: '',
             type: '',
-            profession: ''
+            profession: '',
+            icon: {
+                uri: '',
+                name: '',
+                type: ''
+            },
+            cv: {
+                uri: '',
+                name: '',
+                type: ''
+            }
         }
     }
 
@@ -21,22 +32,78 @@ export default class SignUpScreen extends React.Component {
         this.setState(() => ({[name]: text}));
     }
 
-    //pushes new user to global array of users
-    signIn = () => {
+    selectImage = async () => {
+        let result = await DocumentPicker.getDocumentAsync({
+            type: 'image/*',
+            copyToCacheDirectory: true,
+            multiple: false
+        });
+
+        if (result.type !== 'cancel') {
+            //this.setState({ icon: result});
+            console.log(result);
+            let nameParts = result.name.split('.');
+            let fileType = nameParts[nameParts.length - 1];
+            if(fileType === 'jpg') {
+                fileType = 'jpeg';
+            }
+            console.log(fileType);
+            this.setState({ icon: {
+                uri: result.uri,
+                name: result.name,
+                type: "image/"+fileType
+            }});
+        }
+    };
+
+    //Sends data to server
+    signUp = () => {
         if(this.state.profession == 'select') {
             alert('Selecciona un rol antes de crear un usuario');
         }
         else {
-            global.users.push({
-                name: this.state.name,
-                email: this.state.email,
-                password: this.state.password,
-                type: this.state.type,
-                profession: this.state.profession
-            });
-            alert('Usuario creado con exito');
+            if(this.state.type === 'Parent') {
+                this.addParent();
+            }
+            else {
+                //TODO append cv and profession too
+            }
         }
 
+    }
+
+    addParent = () => {
+        let form = new FormData();
+        let url = 'http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com/api/users/addparent';
+        form.append('email', this.state.email);
+        form.append('name', this.state.name);
+        form.append('password', this.state.password);
+        form.append('type', this.state.type);
+        form.append('icon', this.state.icon);
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            body: form
+        }).then(res => {
+            if(res.status == 200) {
+                alert('Usuario creado con exito');
+            }
+            else {
+                alert('Ya existe un usuario con este email, por favor intenta con otro');
+                console.log(res);
+            }
+        })
+        .catch(error => {
+            alert('Hubo un error inesperado, intentelo de nuevo')
+        })
+    }
+
+    selectCV = async () => {
+        let result = await DocumentPicker.getDocumentAsync({});
+        alert(result.uri);
+        console.log(result);
     }
 
     render() {
@@ -86,9 +153,14 @@ export default class SignUpScreen extends React.Component {
                     value={this.state.profession}
                 />
                 <Button
+                    title="Select image"
+                    buttonStyle={style.buttons}
+                    onPress={() => this.selectImage()}
+                />
+                <Button
                     title="Sign Up"
                     buttonStyle={style.buttons}
-                    onPress={() => this.signIn()}
+                    onPress={() => this.signUp()}
                 />
             </KeyboardAvoidingView>
         );
