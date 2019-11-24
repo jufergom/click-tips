@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, KeyboardAvoidingView, AsyncStorage,
-Picker } from 'react-native';
+Picker, View, ActivityIndicator } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { Image, SocialIcon } from 'react-native-elements';
 import * as DocumentPicker from 'expo-document-picker';
@@ -14,6 +14,7 @@ export default class SignUpScreen extends React.Component {
             password: '',
             type: '',
             profession: '',
+            showMoreOptions: false,
             icon: {
                 uri: '',
                 name: '',
@@ -23,7 +24,8 @@ export default class SignUpScreen extends React.Component {
                 uri: '',
                 name: '',
                 type: ''
-            }
+            },
+            loading: false
         }
     }
 
@@ -40,8 +42,6 @@ export default class SignUpScreen extends React.Component {
         });
 
         if (result.type !== 'cancel') {
-            //this.setState({ icon: result});
-            console.log(result);
             let nameParts = result.name.split('.');
             let fileType = nameParts[nameParts.length - 1];
             if(fileType === 'jpg') {
@@ -54,22 +54,49 @@ export default class SignUpScreen extends React.Component {
                 type: "image/"+fileType
             }});
         }
-    };
+    }
+
+    selectCV = async () => {
+        let result = await DocumentPicker.getDocumentAsync({
+            type: 'application/pdf',
+            copyToCacheDirectory: true,
+            multiple: false
+        });
+        console.log(result);
+        if (result.type !== 'cancel') {
+            this.setState({ cv: {
+                uri: result.uri,
+                name: result.name,
+                type: "application/pdf"
+            }});
+        }
+    }
 
     //Sends data to server
     signUp = () => {
-        if(this.state.profession == 'select') {
-            alert('Selecciona un rol antes de crear un usuario');
-        }
-        else {
-            if(this.state.type === 'Parent') {
-                this.addParent();
+        this.setState({loading: true}, () => {
+            console.log(this.state.loading);
+            if(this.state.type == 'select') {
+                alert('Selecciona un rol antes de crear un usuario');
+                this.setState({loading: false});
+            }
+            else if(this.state.icon.name == '') {
+                alert('Selecciona una foto de perfil antes de crear tu usuario');
+                this.setState({loading: false});
+            }
+            else if(this.state.type == 'Professional' && this.state.cv.name == '') {
+                alert('Debes proporcionar tu curriculum para poder crear tu usuario');
+                this.setState({loading: false});
             }
             else {
-                //TODO append cv and profession too
+                if(this.state.type == 'Parent') {
+                    this.addParent();
+                }
+                else {
+                    this.addProfessional();
+                }
             }
-        }
-
+        });
     }
 
     addParent = () => {
@@ -89,21 +116,52 @@ export default class SignUpScreen extends React.Component {
         }).then(res => {
             if(res.status == 200) {
                 alert('Usuario creado con exito');
+                this.setState({loading: false});
             }
             else {
-                alert('Ya existe un usuario con este email, por favor intenta con otro');
-                console.log(res);
+                alert('Error al crear usuario, probablemente ya exista otro usuario con ese email');
+                this.setState({loading: false});
             }
         })
         .catch(error => {
-            alert('Hubo un error inesperado, intentelo de nuevo')
+            alert('Hubo un error inesperado, intentelo de nuevo');
+            console.log(error);
+            this.setState({loading: false});
         })
     }
 
-    selectCV = async () => {
-        let result = await DocumentPicker.getDocumentAsync({});
-        alert(result.uri);
-        console.log(result);
+    addProfessional = () => {
+        let form = new FormData();
+        let url = 'http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com/api/users';
+        form.append('email', this.state.email);
+        form.append('name', this.state.name);
+        form.append('password', this.state.password);
+        form.append('type', this.state.type);
+        form.append('profession', this.state.profession);
+        form.append('icon', this.state.icon);
+        form.append('cv', this.state.cv);
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            body: form
+        }).then(res => {
+            if(res.status == 200) {
+                alert('Usuario creado con exito');
+                this.setState({loading: false});
+            }
+            else {
+                alert('Error al crear usuario, probablemente ya exista otro usuario con ese email');
+                console.log(res);
+                this.setState({loading: false});
+            }
+        })
+        .catch(error => {
+            alert('Hubo un error inesperado, intentelo de nuevo');
+            console.log(error);
+            this.setState({loading: false});
+        })
     }
 
     render() {
@@ -133,35 +191,53 @@ export default class SignUpScreen extends React.Component {
                     onChange={(event) => this.handleChange(event, 'password')}
                     value={this.state.password}
                 />
-                <Picker
-                    selectedValue={this.state.type}
-                    style={{height: 50, width: 300 }}
-                    onValueChange={(itemValue, itemIndex) =>
-                        this.setState({type: itemValue})
-                    }>
-                    <Picker.Item label="Selecciona tu rol ..." value="select" />
-                    <Picker.Item label="Parent" value="Parent" />
-                    <Picker.Item label="Professional" value="Professional" />
-                </Picker>
                 <Input
                     name='profession'
                     placeholder='Profesion'
-                    editable={this.state.TextInputDisableHolder}
                     style={{ marginBottom: 20 }}
                     placeholderTextColor='#36486b'
                     onChange={(event) => this.handleChange(event, 'profession')}
                     value={this.state.profession}
                 />
+                <Picker
+                    selectedValue={this.state.type}
+                    style={{height: 50, width: 300 }}
+                    onValueChange={(itemValue, itemIndex) => {
+                        this.setState({type: itemValue});
+                        if(itemValue == 'Professional') {
+                            this.setState({showMoreOptions: true});
+                        }
+                        else {
+                            this.setState({showMoreOptions: false});
+                        }
+                    }}>
+                    <Picker.Item label="Selecciona tu rol ..." value="select" />
+                    <Picker.Item label="Parent" value="Parent" />
+                    <Picker.Item label="Professional" value="Professional" />
+                </Picker>
                 <Button
-                    title="Select image"
+                    title="Seleccionar foto de perfil"
                     buttonStyle={style.buttons}
                     onPress={() => this.selectImage()}
                 />
+                {this.state.showMoreOptions ?
+                  <View>
+                      <Button
+                          title="Subir curriculum"
+                          buttonStyle={style.buttons}
+                          onPress={() => this.selectCV()}
+                      />
+                  </View>
+                       :
+                    <View>
+                    </View>
+                }
                 <Button
                     title="Sign Up"
                     buttonStyle={style.buttons}
                     onPress={() => this.signUp()}
                 />
+                <ActivityIndicator animating={this.state.loading} size="large" color="#0000ff" />
             </KeyboardAvoidingView>
         );
     }
