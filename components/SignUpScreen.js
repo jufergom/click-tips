@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, KeyboardAvoidingView, AsyncStorage,
-Picker, View, ActivityIndicator } from 'react-native';
+Picker, View } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { Image, SocialIcon } from 'react-native-elements';
 import * as DocumentPicker from 'expo-document-picker';
@@ -75,7 +75,6 @@ export default class SignUpScreen extends React.Component {
     //Sends data to server
     signUp = () => {
         this.setState({loading: true}, () => {
-            console.log(this.state.loading);
             if(this.state.type == 'select') {
                 alert('Selecciona un rol antes de crear un usuario');
                 this.setState({loading: false});
@@ -235,9 +234,10 @@ export default class SignUpScreen extends React.Component {
                 <Button
                     title="Sign Up"
                     buttonStyle={style.buttons}
+                    loading={this.state.loading}
+                    disabled={this.state.loading}
                     onPress={() => this.signUp()}
                 />
-                <ActivityIndicator animating={this.state.loading} size="large" color="#0000ff" />
             </KeyboardAvoidingView>
         );
     }

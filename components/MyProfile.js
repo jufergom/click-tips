@@ -11,34 +11,34 @@ export default class MyProfile extends React.Component {
         this.state = {
             name: '',
             subtitle: '',
-            normal: false
+            normal: false,
+            icon: 'https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg'
         };
     }
 
-    async componentDidMount() {
-        try {
-            const name = await AsyncStorage.getItem('name');
-            const email = await AsyncStorage.getItem('email');
-            const type = await AsyncStorage.getItem('type');
-            //this.setState({type: type});
-            if(type == 'Professional') {
-                const profession = await AsyncStorage.getItem('profession');
+    componentDidMount() {
+      let url = 'http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com';
+      fetch(url+'/api/users/'+global.user)
+        .then(response => response.json())
+        .then(response => {
+            if(response[0].type == 'Professional') {
                 this.setState({
-                    name: name,
-                    subtitle: profession,
-                    normal: false
+                    name: response[0].name,
+                    subtitle: response[0].profession,
+                    normal: false,
+                    icon: url+'/uploads/'+response[0].icon
                 });
             }
             else {
                 this.setState({
-                    name: name,
-                    subtitle: email,
-                    normal: true
+                    name: response[0].name,
+                    subtitle: response[0].email,
+                    normal: true,
+                    icon: url+'/uploads/'+response[0].icon
                 });
             }
-        } catch(error) {
-            console.log(error);
-        }
+        })
+        .catch(error => console.log(error))
     }
 
     //navigates to UploadDocument component
@@ -52,7 +52,7 @@ export default class MyProfile extends React.Component {
                 <ListItem
                     leftAvatar={{
                         title: 'None',
-                        source: { uri: 'https://banner2.cleanpng.com/20180410/ewq/kisspng-rendering-github-smile-emoji-5acc7bd86d37a8.4792946515233504884474.jpg'},
+                        source: { uri: this.state.icon},
                         showEditButton: true,
                         size: 'xlarge'
                     }}
