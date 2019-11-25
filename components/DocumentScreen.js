@@ -6,28 +6,31 @@ export class DocumentScreen extends React.Component {
    constructor(props) {
        super(props);
        this.state = {
-          image: props.navigation.getParam('image', 'image link'),
+          image: 'http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com/uploads/'+props.navigation.getParam('image', 'image link'),
           title: props.navigation.getParam('title', 'title'),
           description: props.navigation.getParam('description', 'description'),
-          source: props.navigation.getParam('source', 'source'),
-          author: props.navigation.getParam('author', 'author'),
+          source: 'http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com/uploads/'+props.navigation.getParam('source', 'source'),
+          author: '',
           price: props.navigation.getParam('price', 'price'),
           free: false
        }
    }
 
-   /*Search for the user's name in the global users array, in order
-   to pass all the professional's info to profile component, and go there */
+   componentDidMount() {
+       let url = 'http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com/api/users/'+this.props.navigation.getParam('users_email', 'email');
+       fetch(url)
+         .then(response => response.json())
+         .then(response => {
+             this.setState({author: response[0].name});
+         })
+         .catch(error => console.log(error))
+   }
+
+   /*Passes users email (primary key on db) to profile component and goes there*/
    seeProfessionalProfile() {
-     for(i = 0; i < global.users.length; i++) {
-       if(global.users[i].name == this.state.author) {
-         this.props.navigation.navigate('ProfessionalProfile', {
-           name: global.users[i].name,
-           profession: global.users[i].profession,
-           email: global.users[i].email
-         });
-       }
-     }
+        this.props.navigation.navigate('ProfessionalProfile', {
+            users_email: this.props.navigation.getParam('users_email', 'email')
+        });
    }
 
    goToPayment() {
@@ -46,13 +49,16 @@ export class DocumentScreen extends React.Component {
               contentContainerStyle={{ height: 70 }}
            >
            </Tile>
-           <Text h4>Autor: {this.state.author}</Text>
-
+           <View style={style.marginBottom}></View>
            <Button
               title="Ver perfil del autor"
               onPress={() => {this.seeProfessionalProfile()}}
            />
+           <Text h4>Autor: {this.state.author}</Text>
+           <View style={style.marginTop}></View>
+
            <Text>{this.state.description}</Text>
+           <View style={style.marginBottom}></View>
            <PricingCard
               color="#4f9deb"
               title="Comprar"
@@ -73,6 +79,12 @@ const style = StyleSheet.create({
     },
     buttons: {
         width: 300,
+        marginTop: 20
+    },
+    marginBottom: {
+        marginBottom: 25
+    },
+    marginTop: {
         marginTop: 20
     }
 });

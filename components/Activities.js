@@ -43,7 +43,14 @@ export default class Activities extends React.Component {
               title='Ver mas'
               onPress={() => {
                 this.props.navigation.navigate('DocumentView', {
-                  id: document.id_documents
+                  id: document.id_documents,
+                  title: document.title,
+                  description: document.description,
+                  source: document.source,
+                  price: document.price,
+                  image: document.image,
+                  users_email: document.users_email,
+                  category: document.category
                 });
               }}
           />
