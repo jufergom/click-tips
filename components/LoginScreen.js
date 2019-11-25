@@ -43,7 +43,7 @@ export default class HomeScreen extends React.Component {
 
     //go to home screen skipping login
     entrarDeOne() {
-        this.props.navigation.navigate('Home');
+        alert('Coming Soon!')
     }
 
     //go to sign up screen

@@ -13,7 +13,7 @@ export class HomeScreen extends React.Component {
         ),
     });
 
-    
+
     render() {
         return(
             <View>
@@ -25,12 +25,12 @@ export class HomeScreen extends React.Component {
                     >
                         <Button
                             buttonStyle={{
-                                borderRadius: 0, 
-                                marginLeft: 0, 
-                                marginRight: 0, 
+                                borderRadius: 0,
+                                marginLeft: 0,
+                                marginRight: 0,
                                 marginBottom: 0}
                             }
-                            title='Entrar' 
+                            title='Entrar'
                             onPress={() => this.props.navigation.navigate('Questions')}
                         />
                     </Card>
@@ -41,12 +41,12 @@ export class HomeScreen extends React.Component {
                     >
                         <Button
                             buttonStyle={{
-                                borderRadius: 0, 
-                                marginLeft: 0, 
-                                marginRight: 0, 
+                                borderRadius: 0,
+                                marginLeft: 0,
+                                marginRight: 0,
                                 marginBottom: 0}
                             }
-                            title='Entrar' 
+                            title='Entrar'
                             onPress={() => this.props.navigation.navigate('Games')}
                         />
                     </Card>
@@ -57,43 +57,13 @@ export class HomeScreen extends React.Component {
                     >
                         <Button
                             buttonStyle={{
-                                borderRadius: 0, 
-                                marginLeft: 0, 
-                                marginRight: 0, 
+                                borderRadius: 0,
+                                marginLeft: 0,
+                                marginRight: 0,
                                 marginBottom: 0}
                             }
-                            title='Entrar' 
+                            title='Entrar'
                             onPress={() => this.props.navigation.navigate('Tips')}
-                        />
-                    </Card>
-                    <Card
-                        title='Foro'
-                        image={require('../img/chat.png')}
-                        imageStyle={{width: 200, height: 400}}
-                    >
-                        <Button
-                            buttonStyle={{
-                                borderRadius: 0, 
-                                marginLeft: 0, 
-                                marginRight: 0, 
-                                marginBottom: 0}
-                            }
-                            title='Entrar' 
-                        />
-                    </Card>
-                    <Card
-                        title='Descargas y pagos'
-                        image={require('../img/bill.png')}
-                        imageStyle={{width: 200, height: 400}}
-                    >
-                        <Button
-                            buttonStyle={{
-                                borderRadius: 0, 
-                                marginLeft: 0, 
-                                marginRight: 0, 
-                                marginBottom: 0}
-                            }
-                            title='Entrar' 
                         />
                     </Card>
                 </ScrollView>

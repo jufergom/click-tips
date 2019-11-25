@@ -4,14 +4,14 @@ import { createStackNavigator } from 'react-navigation-stack';
 import LoginScreen  from './components/LoginScreen'
 import { HomeScreen } from './components/HomeScreen';
 import MyProfile from './components/MyProfile';
-import DailyTips from './components/DailyTips';
+import { DailyTips } from './components/DailyTips';
 import CommonQuestions from './components/CommonQuestions';
 import Activities from './components/Activities';
 import SignUpScreen from './components/SignUpScreen';
 import { DocumentScreen } from './components/DocumentScreen';
 import PaymentScreen from './components/PaymentScreen';
-import ProfileScreen from './components/ProfileScreen'
-import UploadDocument from './components/UploadDocument'
+import ProfileScreen from './components/ProfileScreen';
+import UploadDocument from './components/UploadDocument';
 import './global';
 
 const AppNavigator = createStackNavigator(
