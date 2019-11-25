@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, KeyboardAvoidingView, AsyncStorage,
 Picker, View } from 'react-native';
 import { Input, Button } from 'react-native-elements';
-import { Image, SocialIcon } from 'react-native-elements';
 import * as DocumentPicker from 'expo-document-picker';
 
 export default class SignUpScreen extends React.Component {

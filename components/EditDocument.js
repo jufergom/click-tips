@@ -1,30 +1,33 @@
 import React from 'react';
-import { StyleSheet, KeyboardAvoidingView, Linking, Text,
-Picker } from 'react-native';
-import { Input, Button, Image } from 'react-native-elements';
+import { StyleSheet, KeyboardAvoidingView, Picker, View} from 'react-native';
+import { Input, Button, Image, Text } from 'react-native-elements';
 import * as DocumentPicker from 'expo-document-picker';
 
-export default class UploadDocument extends React.Component {
+export default class EditDocument extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            image: '',
             title: '',
             description: '',
-            source: '',
             price: '',
-            author: '',
             category: '',
             loading: false
         }
     }
 
     componentDidMount() {
-       let url = 'http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com';
-       fetch(url+'/api/users/'+global.user)
-         .then(response => response.json())
-         .then(response => this.setState({author: response[0].email}))
-         .catch(error => console.log(error))
+        let url = 'http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com';
+        fetch(url+'/api/documents/'+this.props.navigation.getParam('id', 'id'))
+        .then(response => response.json())
+        .then(response => {
+            this.setState({
+                title: response[0].title,
+                description: response[0].description,
+                price: response[0].price,
+                category: response[0].category
+            });
+        })
+        .catch(error => console.log(error))
     }
 
     handleChange = (event, name) => {
@@ -33,6 +36,7 @@ export default class UploadDocument extends React.Component {
     }
 
     //selects item from device file system
+    /*
     selectImage = async () => {
         let result = await DocumentPicker.getDocumentAsync({
             type: 'image/*',
@@ -117,10 +121,22 @@ export default class UploadDocument extends React.Component {
             })
         }
     }
+    */
 
     render() {
         return (
             <KeyboardAvoidingView style={style.container}>
+                <Button
+                    title="Modificar imagen"
+                    buttonStyle={style.buttons}
+                    onPress={() => console.log('Update image was pressed')}
+                />
+                <Button
+                    title="Modificar documento"
+                    buttonStyle={style.buttons}
+                    onPress={() => console.log('Update document was pressed')}
+                />
+                <Text h4>Informacion del documento</Text>
                 <Input
                     name='title'
                     placeholder='Titulo'
@@ -129,9 +145,10 @@ export default class UploadDocument extends React.Component {
                     onChange={(event) => this.handleChange(event, 'title')}
                     value={this.state.title}
                 />
+                <Text>Titulo del documento</Text>
                 <Input
                     name='description'
-                    placeholder='Description'
+                    placeholder='Descripcion del documento'
                     multiline
                     numberOfLines={3}
                     style={{ marginBottom: 20 }}
@@ -139,6 +156,7 @@ export default class UploadDocument extends React.Component {
                     onChange={(event) => this.handleChange(event, 'description')}
                     value={this.state.description}
                 />
+                <Text>Descripcion del documento</Text>
                 <Input
                     name='price'
                     placeholder='Precio en Lempiras'
@@ -146,8 +164,9 @@ export default class UploadDocument extends React.Component {
                     keyboardType={'numeric'}
                     placeholderTextColor='#36486b'
                     onChange={(event) => this.handleChange(event, 'price')}
-                    value={this.state.price}
+                    value={`${this.state.price}`}
                 />
+                <Text>Precio en Lempiras</Text>
                 <Picker
                     selectedValue={this.state.category}
                     style={{height: 50, width: 300 }}
@@ -159,26 +178,11 @@ export default class UploadDocument extends React.Component {
                     <Picker.Item label="Actividades y Juegos" value="Actividades y Juegos" />
                 </Picker>
                 <Button
-                    title="Seleccionar imagen"
-                    buttonStyle={style.buttons}
-                    onPress={() => this.selectImage()}
-                />
-                <Button
-                    title="Seleccionar documento pdf"
-                    buttonStyle={style.buttons}
-                    onPress={() => this.selectDocument()}
-                />
-                <Button
-                    title="Subir documento"
+                    title="Actualizar"
                     buttonStyle={style.buttons}
                     loading={this.state.loading}
                     disabled={this.state.loading}
-                    onPress={() => this.upload()}
-                />
-                <Image
-                    source={ require('../img/logo.png') }
-                    style={{ width: 300, height: 300 }}
-                    containerStyle={{ marginTop: 50 }}
+                    onPress={() => console.log('Edit was pressed')}
                 />
             </KeyboardAvoidingView>
         );
@@ -195,3 +199,4 @@ const style = StyleSheet.create({
         marginTop: 20
     }
 });
+

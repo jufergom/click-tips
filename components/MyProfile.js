@@ -2,7 +2,6 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 import { ListItem } from 'react-native-elements';
-import { AsyncStorage } from 'react-native';
 
 export default class MyProfile extends React.Component {
 
@@ -41,9 +40,14 @@ export default class MyProfile extends React.Component {
         .catch(error => console.log(error))
     }
 
+    //see all the documents that this author has uploaded
+    goToMyDocuments = () => {
+        this.props.navigation.navigate('MyDocumentsView');
+    }
+
     //navigates to UploadDocument component
     uploadDocument() {
-      this.props.navigation.navigate('Upload');
+        this.props.navigation.navigate('Upload');
     }
 
     render() {
@@ -75,8 +79,9 @@ export default class MyProfile extends React.Component {
                        :
                     <View style={style.container}>
                         <Button
-                            title="Hoja de vida"
+                            title="Mis documentos subidos"
                             buttonStyle={style.buttons}
+                            onPress={() => this.goToMyDocuments()}
                         />
                         <Button
                             title="Subir documento"

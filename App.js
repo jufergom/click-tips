@@ -12,6 +12,8 @@ import { DocumentScreen } from './components/DocumentScreen';
 import PaymentScreen from './components/PaymentScreen';
 import ProfileScreen from './components/ProfileScreen';
 import UploadDocument from './components/UploadDocument';
+import EditDocument from './components/EditDocument';
+import MyDocuments from './components/MyDocuments';
 import './global';
 
 const AppNavigator = createStackNavigator(
@@ -74,6 +76,18 @@ const AppNavigator = createStackNavigator(
       screen: Activities,
       navigationOptions: {
         title: 'Actividades y Juegos'
+      }
+    },
+    MyDocumentsView: {
+      screen: MyDocuments,
+      navigationOptions: {
+        title: 'Mis Documentos'
+      }
+    },
+    EditDocumentView: {
+      screen: EditDocument,
+      navigationOptions: {
+        title: 'Editar Documento'
       }
     },
     DocumentView: {
