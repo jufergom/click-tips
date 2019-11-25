@@ -232,7 +232,7 @@ export default class SignUpScreen extends React.Component {
                     </View>
                 }
                 <Button
-                    title="Sign Up"
+                    title="Registrarse"
                     buttonStyle={style.buttons}
                     loading={this.state.loading}
                     disabled={this.state.loading}

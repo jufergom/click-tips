@@ -76,12 +76,12 @@ export default class HomeScreen extends React.Component {
                     value={this.state.password}
                 />
                 <Button
-                    title="Sign In"
+                    title="Iniciar Sesion"
                     buttonStyle={style.buttons}
                     onPress={() => this.login()}
                 />
                 <Button
-                    title="Sign Up"
+                    title="Registrarse"
                     buttonStyle={style.buttons}
                     onPress={() => this.goToSignUp()}
                 />
