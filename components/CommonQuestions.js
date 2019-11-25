@@ -5,15 +5,33 @@ import { Text, Card, Button } from 'react-native-elements';
 export default class CommonQuestions extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            documents: []
+        }
+    }
+
+    componentDidMount() {
+        let url = 'http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com/api/documents';
+        fetch(url)
+          .then(response => response.json())
+          .then(response => {
+              for(i = 0; i < response.length; i++) {
+                  if(response[i].category == "Preguntas Frecuentes") {
+                      const list = [...this.state.documents, response[i]];
+                      this.setState({documents: list});
+                  }
+              }
+          })
+          .catch(error => console.log(error))
     }
 
     generate = () => {
-      return global.documents.map(document => (
+      return this.state.documents.map(document => (
         <Card
             title={document.title}
-            image={{uri: document.image}}
+            image={{uri: "http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com/uploads/"+document.image}}
             imageStyle={{width: 200, height: 400}}
-            key={document.id}
+            key={document.id_documents}
         >
           <Button
               buttonStyle={{
@@ -25,12 +43,7 @@ export default class CommonQuestions extends React.Component {
               title='Ver mas'
               onPress={() => {
                 this.props.navigation.navigate('DocumentView', {
-                  image: document.image,
-                  title: document.title,
-                  author: document.author,
-                  description: document.description,
-                  price: document.price,
-                  source: document.source
+                  id: document.id_documents
                 });
               }}
           />

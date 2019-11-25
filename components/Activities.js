@@ -1,16 +1,62 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-elements';
+import { StyleSheet, View, ScrollView } from 'react-native';
+import { Text, Card, Button } from 'react-native-elements';
 
 export default class Activities extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            documents: []
+        }
     }
-    
+
+    componentDidMount() {
+        let url = 'http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com/api/documents';
+        fetch(url)
+          .then(response => response.json())
+          .then(response => {
+              for(i = 0; i < response.length; i++) {
+                  if(response[i].category == "Actividades y Juegos") {
+                      const list = [...this.state.documents, response[i]];
+                      this.setState({documents: list});
+                  }
+              }
+          })
+          .catch(error => console.log(error))
+    }
+
+    generate = () => {
+      return this.state.documents.map(document => (
+        <Card
+            title={document.title}
+            image={{uri: "http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com/uploads/"+document.image}}
+            imageStyle={{width: 200, height: 400}}
+            key={document.id_documents}
+        >
+          <Button
+              buttonStyle={{
+                borderRadius: 0,
+                marginLeft: 0,
+                marginRight: 0,
+                marginBottom: 0}
+              }
+              title='Ver mas'
+              onPress={() => {
+                this.props.navigation.navigate('DocumentView', {
+                  id: document.id_documents
+                });
+              }}
+          />
+        </Card>
+      ));
+    };
+
     render() {
         return (
-            <View style={style.container}>
-                <Text>Actividades y Juegos</Text>
+            <View>
+                <ScrollView>
+                    {this.generate()}
+                </ScrollView>
             </View>
         );
     }
@@ -18,7 +64,7 @@ export default class Activities extends React.Component {
 
 const style = StyleSheet.create({
     container:{
-        alignItems: 'center', 
+        alignItems: 'center',
         justifyContent: 'center'
     },
     buttons: {

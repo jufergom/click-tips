@@ -49,7 +49,7 @@ const AppNavigator = createStackNavigator(
     Questions: {
       screen: CommonQuestions,
       navigationOptions: {
-        title: 'Click Tips'
+        title: 'Preguntas Frecuentes'
       }
     },
     Upload: {
@@ -73,7 +73,7 @@ const AppNavigator = createStackNavigator(
     Games: {
       screen: Activities,
       navigationOptions: {
-        title: 'Click Tips'
+        title: 'Actividades y Juegos'
       }
     },
     DocumentView: {
