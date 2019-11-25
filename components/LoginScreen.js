@@ -9,7 +9,8 @@ export default class HomeScreen extends React.Component {
         super(props);
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            loading: false
         }
     }
 
@@ -20,6 +21,7 @@ export default class HomeScreen extends React.Component {
 
     //Sends a post request to api rest, if requests status code is 200, redirect to homepage
     login = () => {
+        this.setState({loading: true});
         let url = 'http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com/api/users/login';
         let data = {email: this.state.email, password: this.state.password};
 
@@ -33,17 +35,22 @@ export default class HomeScreen extends React.Component {
             if(res.status == 200) {
                 global.user = this.state.email;
                 this.props.navigation.navigate('Home');
+                this.setState({loading: false});
             }
             else {
                 alert('Usuario y/o contraseña incorrectos');
+                this.setState({loading: false});
             }
         })
-        .catch(error => alert('Ha ocurrido un error al iniciar sesion'))
+        .catch(error => {
+            alert('Ha ocurrido un error al iniciar sesion');
+            this.setState({loading: false});
+        })
     }
 
     //go to home screen skipping login
     entrarDeOne() {
-        alert('Coming Soon!')
+        this.props.navigation.navigate('Home');
     }
 
     //go to sign up screen
@@ -78,6 +85,8 @@ export default class HomeScreen extends React.Component {
                 <Button
                     title="Iniciar Sesion"
                     buttonStyle={style.buttons}
+                    loading={this.state.loading}
+                    disabled={this.state.loading}
                     onPress={() => this.login()}
                 />
                 <Button
@@ -92,7 +101,6 @@ export default class HomeScreen extends React.Component {
                     style={style.buttons}
                     onPress={() => this.entrarDeOne()}
                 />
-
                 <SocialIcon
                     title='Sign In With Google'
                     button

@@ -58,6 +58,7 @@ export default class MyProfile extends React.Component {
                     }}
                     title={this.state.name}
                     subtitle={this.state.subtitle}
+                    onPress={() => console.log("Works!")}
                     chevron
                 />
                 {this.state.normal ?

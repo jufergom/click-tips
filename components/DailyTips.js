@@ -74,7 +74,7 @@ export class DailyTips extends React.Component {
            <View style={style.marginBottom}></View>
            <PricingCard
               color="#4f9deb"
-              title="Comprar"
+              title="Obtener"
               price={this.state.price}
               info={['Contenido completo']}
               button={{ title: 'Adquirir' }}
