@@ -16,6 +16,7 @@ import EditDocument from './components/EditDocument';
 import MyDocuments from './components/MyDocuments';
 import EditNormalProfile from './components/EditNormalProfile';
 import EditProfessionalProfile from './components/EditProfessionalProfile';
+import ModifyPassword from './components/ModifyPassword';
 import './global';
 
 const AppNavigator = createStackNavigator(
@@ -108,6 +109,12 @@ const AppNavigator = createStackNavigator(
       screen: EditProfessionalProfile,
       navigationOptions: {
         title: 'Editar Perfil'
+      }
+    },
+    ModifyPasswordView: {
+      screen: ModifyPassword,
+      navigationOptions: {
+        title: 'Modificar contraseña'
       }
     }
   },

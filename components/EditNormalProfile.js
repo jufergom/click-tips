@@ -129,6 +129,12 @@ export default class EditNormalProfile extends React.Component {
         })
     }
 
+    changePassword = () => {
+        this.props.navigation.navigate('ModifyPasswordView', {
+            email: this.props.navigation.getParam('email', 'email')
+        });
+    }
+
     render() {
         return (
             <KeyboardAvoidingView style={style.container}>
@@ -161,7 +167,7 @@ export default class EditNormalProfile extends React.Component {
                 <Button
                     title="Modificar contraseña"
                     buttonStyle={style.buttons}
-                    onPress={() => console.log('Edit password was pressed')}
+                    onPress={() => this.changePassword()}
                 />
             </KeyboardAvoidingView>
         );

@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { Image, SocialIcon } from 'react-native-elements';
-import { AsyncStorage } from 'react-native';
 
 export default class HomeScreen extends React.Component {
     constructor(props) {
