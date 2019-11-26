@@ -11,7 +11,9 @@ export default class EditDocument extends React.Component {
             description: '',
             price: '',
             category: '',
-            loading: false
+            loading: false,
+            loadingImage: false,
+            loadingDocument: false
         }
     }
 
@@ -33,6 +35,135 @@ export default class EditDocument extends React.Component {
     handleChange = (event, name) => {
         const { text } = event.nativeEvent;
         this.setState(() => ({[name]: text}));
+    }
+
+    updateDocumentInfo = () => {
+        this.setState({loading: true});
+        let data = {
+            title: this.state.title,
+            description: this.state.description,
+            price: this.state.price,
+            category: this.state.category
+        }
+        let url = 'http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com/api/documents/';
+        fetch(url+this.props.navigation.getParam('id', 'id'), {
+            method: 'PUT', 
+            body: JSON.stringify(data),
+            headers:{
+              'Content-Type': 'application/json'
+            }
+        }).then(res => {
+            if(res.status == 200) {
+                alert('Datos del documento actualizados con exito');
+                this.setState({loading: false});
+            }
+            else {
+                alert('Error al actualizar documento');
+                console.log(res);
+                this.setState({loading: false});
+            }
+        })
+        .catch(error => {
+            alert('Ha ocurrido un error inesperado, intentelo nuevamente');
+            console.log(error);
+            this.setState({loading: false});
+        })
+    }
+
+    selectImage = async () => {
+        let result = await DocumentPicker.getDocumentAsync({
+            type: 'image/*',
+            copyToCacheDirectory: true,
+            multiple: false
+        });
+
+        if (result.type !== 'cancel') {
+            let nameParts = result.name.split('.');
+            let fileType = nameParts[nameParts.length - 1];
+            if(fileType === 'jpg') {
+                fileType = 'jpeg';
+            }
+            console.log(fileType);
+            let file = {
+                uri: result.uri,
+                name: result.name,
+                type: "image/"+fileType
+            }
+            this.updateImage(file);
+        }
+    }
+
+    updateImage = (file) => {
+        this.setState({loadingImage: true});
+        let url = 'http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com/api/documents/editImage/';
+        let form = new FormData();
+        form.append('image', file);
+        fetch(url+this.props.navigation.getParam('id', 'id'), {
+            method: 'PUT', 
+            headers:{
+                'Content-Type': 'multipart/form-data'
+            },
+            body: form
+        }).then(res => {
+            if(res.status == 200) {
+                alert('Imagen del documento actualizado con exito');
+                this.setState({loadingImage: false});
+            }
+            else {
+                alert('Error al actualizar documento');
+                console.log(res);
+                this.setState({loadingImage: false});
+            }
+        }).catch(error => {
+            alert('Ha ocurrido un error inesperado, intentelo nuevamente');
+            console.log(error);
+            this.setState({loadingImage: false});
+        })
+    }
+
+    selectDocument = async () => {
+        let result = await DocumentPicker.getDocumentAsync({
+            type: 'application/pdf',
+            copyToCacheDirectory: true,
+            multiple: false
+        });
+        console.log(result);
+        if (result.type !== 'cancel') {
+            let file = {
+                uri: result.uri,
+                name: result.name,
+                type: "application/pdf"
+            }
+            this.updateDocument(file);
+        }
+    }
+
+    updateDocument = (file) => {
+        this.setState({loadingDocument: true});
+        let url = 'http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com/api/documents/editSource/';
+        let form = new FormData();
+        form.append('source', file);
+        fetch(url+this.props.navigation.getParam('id', 'id'), {
+            method: 'PUT', 
+            headers:{
+                'Content-Type': 'multipart/form-data'
+            },
+            body: form
+        }).then(res => {
+            if(res.status == 200) {
+                alert('PDF del documento actualizado con exito');
+                this.setState({loadingDocument: false});
+            }
+            else {
+                alert('Error al actualizar documento');
+                console.log(res);
+                this.setState({loadingDocument: false});
+            }
+        }).catch(error => {
+            alert('Ha ocurrido un error inesperado, intentelo nuevamente');
+            console.log(error);
+            this.setState({loadingDocument: false});
+        })
     }
 
     //selects item from device file system
@@ -129,12 +260,16 @@ export default class EditDocument extends React.Component {
                 <Button
                     title="Modificar imagen"
                     buttonStyle={style.buttons}
-                    onPress={() => console.log('Update image was pressed')}
+                    loading={this.state.loadingImage}
+                    disabled={this.state.loadingImage}
+                    onPress={() => this.selectImage()}
                 />
                 <Button
                     title="Modificar documento"
                     buttonStyle={style.buttons}
-                    onPress={() => console.log('Update document was pressed')}
+                    loading={this.state.loadingDocument}
+                    disabled={this.state.loadingDocument}
+                    onPress={() => this.selectDocument()}
                 />
                 <Text h4>Informacion del documento</Text>
                 <Input
@@ -182,7 +317,7 @@ export default class EditDocument extends React.Component {
                     buttonStyle={style.buttons}
                     loading={this.state.loading}
                     disabled={this.state.loading}
-                    onPress={() => console.log('Edit was pressed')}
+                    onPress={() => this.updateDocumentInfo()}
                 />
             </KeyboardAvoidingView>
         );
