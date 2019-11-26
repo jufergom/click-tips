@@ -14,6 +14,8 @@ import ProfileScreen from './components/ProfileScreen';
 import UploadDocument from './components/UploadDocument';
 import EditDocument from './components/EditDocument';
 import MyDocuments from './components/MyDocuments';
+import EditNormalProfile from './components/EditNormalProfile';
+import EditProfessionalProfile from './components/EditProfessionalProfile';
 import './global';
 
 const AppNavigator = createStackNavigator(
@@ -94,6 +96,18 @@ const AppNavigator = createStackNavigator(
       screen: DocumentScreen,
       navigationOptions: {
         title: 'Click Tips'
+      }
+    },
+    EditNormalProfileView: {
+      screen:EditNormalProfile,
+      navigationOptions: {
+        title: 'Editar Perfil'
+      }
+    },
+    EditProfessionalProfileView: {
+      screen: EditProfessionalProfile,
+      navigationOptions: {
+        title: 'Editar Perfil'
       }
     }
   },

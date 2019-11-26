@@ -3,30 +3,32 @@ import { StyleSheet, KeyboardAvoidingView, Picker, View} from 'react-native';
 import { Input, Button, Image, Text } from 'react-native-elements';
 import * as DocumentPicker from 'expo-document-picker';
 
-export default class EditDocument extends React.Component {
+export default class EditProfessionalProfile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: '',
-            description: '',
-            price: '',
-            category: '',
+            name: '',
+            password: '',
+            type: '',
+            profession: '',
+            icon: '',
+            cv: '',
             loading: false,
-            loadingImage: false,
-            loadingDocument: false
+            loadingIcon: false,
+            loadingCV: false
         }
     }
 
     componentDidMount() {
         let url = 'http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com';
-        fetch(url+'/api/documents/'+this.props.navigation.getParam('id', 'id'))
+        fetch(url+'/api/users/'+this.props.navigation.getParam('email', 'email'))
         .then(response => response.json())
         .then(response => {
             this.setState({
-                title: response[0].title,
-                description: response[0].description,
-                price: response[0].price,
-                category: response[0].category
+                name: response[0].name,
+                password: response[0].password,
+                type: response[0].type,
+                profession: response[0].profession
             });
         })
         .catch(error => console.log(error))
@@ -37,17 +39,17 @@ export default class EditDocument extends React.Component {
         this.setState(() => ({[name]: text}));
     }
 
-    //edits all non file documents info
-    updateDocumentInfo = () => {
+    //Edits all non file user info
+    updateUserInfo = () => {
         this.setState({loading: true});
         let data = {
-            title: this.state.title,
-            description: this.state.description,
-            price: this.state.price,
-            category: this.state.category
+            name: this.state.name,
+            password: this.state.password,
+            type: this.state.type,
+            profession: this.state.profession
         }
-        let url = 'http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com/api/documents/';
-        fetch(url+this.props.navigation.getParam('id', 'id'), {
+        let url = 'http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com/api/users/';
+        fetch(url+this.props.navigation.getParam('email', 'email'), {
             method: 'PUT', 
             body: JSON.stringify(data),
             headers:{
@@ -55,12 +57,12 @@ export default class EditDocument extends React.Component {
             }
         }).then(res => {
             if(res.status == 200) {
-                alert('Datos del documento actualizados con exito');
+                alert('Datos del perfil actualizados con exito');
                 this.setState({loading: false});
                 this.props.navigation.pop(2);
             }
             else {
-                alert('Error al actualizar documento');
+                alert('Error al actualizar perfil');
                 console.log(res);
                 this.setState({loading: false});
             }
@@ -71,7 +73,7 @@ export default class EditDocument extends React.Component {
         })
     }
 
-    //selects image from device file system and uploads it
+    //selects an image from device file system
     selectImage = async () => {
         let result = await DocumentPicker.getDocumentAsync({
             type: 'image/*',
@@ -95,13 +97,13 @@ export default class EditDocument extends React.Component {
         }
     }
 
-    //upload image selected in the function that is up
+    //uploads the image selected up
     updateImage = (file) => {
-        this.setState({loadingImage: true});
-        let url = 'http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com/api/documents/editImage/';
+        this.setState({loadingIcon: true});
+        let url = 'http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com/api/users/editIcon/';
         let form = new FormData();
-        form.append('image', file);
-        fetch(url+this.props.navigation.getParam('id', 'id'), {
+        form.append('icon', file);
+        fetch(url+this.props.navigation.getParam('email', 'email'), {
             method: 'PUT', 
             headers:{
                 'Content-Type': 'multipart/form-data'
@@ -109,23 +111,23 @@ export default class EditDocument extends React.Component {
             body: form
         }).then(res => {
             if(res.status == 200) {
-                alert('Imagen del documento actualizado con exito');
-                this.setState({loadingImage: false});
+                alert('Foto de perfil actualizado con exito');
+                this.setState({loadingIcon: false});
                 this.props.navigation.pop(2);
             }
             else {
-                alert('Error al actualizar documento');
+                alert('Error al actualizar la foto de perfil');
                 console.log(res);
-                this.setState({loadingImage: false});
+                this.setState({loadingIcon: false});
             }
         }).catch(error => {
             alert('Ha ocurrido un error inesperado, intentelo nuevamente');
             console.log(error);
-            this.setState({loadingImage: false});
+            this.setState({loadingIcon: false});
         })
     }
 
-    //selects a document from the device file system
+    //selects document from file system
     selectDocument = async () => {
         let result = await DocumentPicker.getDocumentAsync({
             type: 'application/pdf',
@@ -143,13 +145,13 @@ export default class EditDocument extends React.Component {
         }
     }
 
-    //uploads the chosen file of the function that is up
+    //uploads document that was chosen up
     updateDocument = (file) => {
-        this.setState({loadingDocument: true});
-        let url = 'http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com/api/documents/editSource/';
+        this.setState({loadingCV: true});
+        let url = 'http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com/api/users/editCV/';
         let form = new FormData();
-        form.append('source', file);
-        fetch(url+this.props.navigation.getParam('id', 'id'), {
+        form.append('cv', file);
+        fetch(url+this.props.navigation.getParam('email', 'email'), {
             method: 'PUT', 
             headers:{
                 'Content-Type': 'multipart/form-data'
@@ -157,87 +159,70 @@ export default class EditDocument extends React.Component {
             body: form
         }).then(res => {
             if(res.status == 200) {
-                alert('PDF del documento actualizado con exito');
-                this.setState({loadingDocument: false});
+                alert('Curriculum actualizado con exito');
+                this.setState({loadingCV: false});
                 this.props.navigation.pop(2);
             }
             else {
-                alert('Error al actualizar documento');
+                alert('Error al actualizar curriculum');
                 console.log(res);
-                this.setState({loadingDocument: false});
+                this.setState({loadingCV: false});
             }
         }).catch(error => {
             alert('Ha ocurrido un error inesperado, intentelo nuevamente');
             console.log(error);
-            this.setState({loadingDocument: false});
+            this.setState({loadingCV: false});
         })
     }
 
     render() {
         return (
             <KeyboardAvoidingView style={style.container}>
-                <Text h4>Informacion del documento</Text>
+                <Text h4>Mi Perfil</Text>
                 <Input
-                    name='title'
-                    placeholder='Titulo'
+                    name='name'
+                    placeholder='Nombre'
                     style={{ marginBottom: 20 }}
                     placeholderTextColor='#36486b'
-                    onChange={(event) => this.handleChange(event, 'title')}
-                    value={this.state.title}
+                    onChange={(event) => this.handleChange(event, 'name')}
+                    value={this.state.name}
                 />
-                <Text>Titulo del documento</Text>
+                <Text>Nombre</Text>
                 <Input
-                    name='description'
-                    placeholder='Descripcion del documento'
-                    multiline
-                    numberOfLines={3}
+                    name='profession'
+                    placeholder='Profesion'
                     style={{ marginBottom: 20 }}
                     placeholderTextColor='#36486b'
-                    onChange={(event) => this.handleChange(event, 'description')}
-                    value={this.state.description}
+                    onChange={(event) => this.handleChange(event, 'profession')}
+                    value={this.state.profession}
                 />
-                <Text>Descripcion del documento</Text>
-                <Input
-                    name='price'
-                    placeholder='Precio en Lempiras'
-                    style={{ marginBottom: 20 }}
-                    keyboardType={'numeric'}
-                    placeholderTextColor='#36486b'
-                    onChange={(event) => this.handleChange(event, 'price')}
-                    value={`${this.state.price}`}
-                />
-                <Text>Precio en Lempiras</Text>
-                <Picker
-                    selectedValue={this.state.category}
-                    style={{height: 50, width: 300 }}
-                    onValueChange={(itemValue, itemIndex) => {
-                        this.setState({category: itemValue});
-                    }}>
-                    <Picker.Item label="Selecciona una categoria ..." value="select" />
-                    <Picker.Item label="Preguntas Frecuentes" value="Preguntas Frecuentes" />
-                    <Picker.Item label="Actividades y Juegos" value="Actividades y Juegos" />
-                </Picker>
+                <Text>Profesion</Text>
                 <Button
                     title="Actualizar"
                     buttonStyle={style.buttons}
                     loading={this.state.loading}
                     disabled={this.state.loading}
-                    onPress={() => this.updateDocumentInfo()}
+                    onPress={() => this.updateUserInfo()}
                 />
                 <View style={style.lineStyle}></View>
                 <Button
-                    title="Modificar imagen"
+                    title="Modificar foto de perfil"
                     buttonStyle={style.buttons}
-                    loading={this.state.loadingImage}
-                    disabled={this.state.loadingImage}
+                    loading={this.state.loadingIcon}
+                    disabled={this.state.loadingIcon}
                     onPress={() => this.selectImage()}
                 />
                 <Button
-                    title="Modificar documento"
+                    title="Modificar curriculum"
                     buttonStyle={style.buttons}
-                    loading={this.state.loadingDocument}
-                    disabled={this.state.loadingDocument}
+                    loading={this.state.loadingCV}
+                    disabled={this.state.loadingCV}
                     onPress={() => this.selectDocument()}
+                />
+                <Button
+                    title="Modificar contraseña"
+                    buttonStyle={style.buttons}
+                    onPress={() => console.log('Edit password was pressed')}
                 />
             </KeyboardAvoidingView>
         );

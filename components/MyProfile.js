@@ -11,7 +11,8 @@ export default class MyProfile extends React.Component {
             name: '',
             subtitle: '',
             normal: false,
-            icon: 'https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg'
+            icon: 'https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg',
+            email: ''
         };
     }
 
@@ -25,7 +26,8 @@ export default class MyProfile extends React.Component {
                     name: response[0].name,
                     subtitle: response[0].profession,
                     normal: false,
-                    icon: url+'/uploads/'+response[0].icon
+                    icon: url+'/uploads/'+response[0].icon,
+                    email: response[0].email
                 });
             }
             else {
@@ -33,7 +35,8 @@ export default class MyProfile extends React.Component {
                     name: response[0].name,
                     subtitle: response[0].email,
                     normal: true,
-                    icon: url+'/uploads/'+response[0].icon
+                    icon: url+'/uploads/'+response[0].icon,
+                    email: response[0].email
                 });
             }
         })
@@ -50,6 +53,20 @@ export default class MyProfile extends React.Component {
         this.props.navigation.navigate('Upload');
     }
 
+    //navigates to edit profile screen
+    editProfile = () => {
+        if(this.state.normal) {
+            this.props.navigation.navigate('EditNormalProfileView', {
+                email: this.state.email
+            });
+        }
+        else {
+            this.props.navigation.navigate('EditProfessionalProfileView', {
+                email: this.state.email
+            });
+        }
+    }
+
     render() {
         return (
             <View>
@@ -58,21 +75,17 @@ export default class MyProfile extends React.Component {
                         title: 'None',
                         source: { uri: this.state.icon},
                         showEditButton: true,
+                        onEditPress: () => this.editProfile(),
                         size: 'xlarge'
                     }}
                     title={this.state.name}
                     subtitle={this.state.subtitle}
-                    onPress={() => console.log("Works!")}
                     chevron
                 />
                 {this.state.normal ?
                     <View style={style.container}>
                         <Button
                             title="Ayuda"
-                            buttonStyle={style.buttons}
-                        />
-                        <Button
-                            title="Recibos y Compras"
                             buttonStyle={style.buttons}
                         />
                     </View>
@@ -89,7 +102,6 @@ export default class MyProfile extends React.Component {
                             onPress={() => this.uploadDocument()}
                         />
                     </View>
-
                 }
             </View>
         );

@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, ScrollView, Alert } from 'react-native';
 import { Card, Button } from 'react-native-elements';
+import { NavigationEvents } from 'react-navigation';
 
 export default class MyDocuments extends React.Component {
     constructor(props) {

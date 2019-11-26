@@ -123,7 +123,7 @@ export default class UploadDocument extends React.Component {
             <KeyboardAvoidingView style={style.container}>
                 <Input
                     name='title'
-                    placeholder='Titulo'
+                    placeholder='Titulo del documento'
                     style={{ marginBottom: 20 }}
                     placeholderTextColor='#36486b'
                     onChange={(event) => this.handleChange(event, 'title')}
@@ -131,7 +131,7 @@ export default class UploadDocument extends React.Component {
                 />
                 <Input
                     name='description'
-                    placeholder='Description'
+                    placeholder='Descripcion del documento'
                     multiline
                     numberOfLines={3}
                     style={{ marginBottom: 20 }}
