@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, KeyboardAvoidingView, Linking, Text,
-Picker } from 'react-native';
+Picker, ScrollView } from 'react-native';
 import { Input, Button, Image } from 'react-native-elements';
 import * as DocumentPicker from 'expo-document-picker';
 
@@ -83,6 +83,15 @@ export default class UploadDocument extends React.Component {
         else if(this.state.category == 'select') {
             alert('Selecciona una categoria para el documento');
         }
+        else if(this.state.title == '') {
+            alert('Escribe un titulo para el documento que vas a publicar')
+        }
+        else if(this.state.title == '') {
+            alert('Escribe un titulo para el documento que vas a publicar')
+        }
+        else if(this.state.description == '') {
+            alert('Escribe una descripcion del documento');
+        }
         else {
             this.setState({loading: true});
             let form = new FormData();
@@ -108,6 +117,7 @@ export default class UploadDocument extends React.Component {
                 else {
                     alert('Error al subir el documento documento');
                     this.setState({loading: false});
+                    console.log(res);
                 }
             })
             .catch(error => {
@@ -121,6 +131,7 @@ export default class UploadDocument extends React.Component {
     render() {
         return (
             <KeyboardAvoidingView style={style.container}>
+              <ScrollView>
                 <Input
                     name='title'
                     placeholder='Titulo del documento'
@@ -175,11 +186,7 @@ export default class UploadDocument extends React.Component {
                     disabled={this.state.loading}
                     onPress={() => this.upload()}
                 />
-                <Image
-                    source={ require('../img/logo.png') }
-                    style={{ width: 300, height: 300 }}
-                    containerStyle={{ marginTop: 50 }}
-                />
+              </ScrollView>
             </KeyboardAvoidingView>
         );
     }

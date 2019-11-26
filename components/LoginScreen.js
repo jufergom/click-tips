@@ -93,20 +93,6 @@ export default class HomeScreen extends React.Component {
                     buttonStyle={style.buttons}
                     onPress={() => this.goToSignUp()}
                 />
-                <SocialIcon
-                    title='Sign In With Facebook'
-                    button
-                    type='facebook'
-                    style={style.buttons}
-                    onPress={() => this.entrarDeOne()}
-                />
-                <SocialIcon
-                    title='Sign In With Google'
-                    button
-                    type='google'
-                    style={style.buttons}
-                    onPress={() => this.entrarDeOne()}
-                />
             </KeyboardAvoidingView>
         );
     }
