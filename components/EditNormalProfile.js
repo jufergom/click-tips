@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, KeyboardAvoidingView, Picker, View} from 'react-native';
+import { StyleSheet, KeyboardAvoidingView, Picker, View, ScrollView } from 'react-native';
 import { Input, Button, Image, Text } from 'react-native-elements';
 import * as DocumentPicker from 'expo-document-picker';
 
@@ -52,7 +52,7 @@ export default class EditNormalProfile extends React.Component {
         }
         let url = 'http://clicktips-env.7ngfdmmcev.us-east-1.elasticbeanstalk.com/api/users/';
         fetch(url+this.props.navigation.getParam('email', 'email'), {
-            method: 'PUT', 
+            method: 'PUT',
             body: JSON.stringify(data),
             headers:{
               'Content-Type': 'application/json'
@@ -106,7 +106,7 @@ export default class EditNormalProfile extends React.Component {
         let form = new FormData();
         form.append('icon', file);
         fetch(url+this.props.navigation.getParam('email', 'email'), {
-            method: 'PUT', 
+            method: 'PUT',
             headers:{
                 'Content-Type': 'multipart/form-data'
             },
@@ -138,7 +138,7 @@ export default class EditNormalProfile extends React.Component {
     render() {
         return (
             <KeyboardAvoidingView style={style.container}>
-                
+              <ScrollView>
                 <Text h4>Mi Perfil</Text>
                 <Input
                     name='name'
@@ -169,6 +169,7 @@ export default class EditNormalProfile extends React.Component {
                     buttonStyle={style.buttons}
                     onPress={() => this.changePassword()}
                 />
+              </ScrollView>
             </KeyboardAvoidingView>
         );
     }
