@@ -28,15 +28,21 @@ export class DocumentScreen extends React.Component {
 
     /*Passes users email (primary key on db) to profile component and goes there*/
     seeProfessionalProfile() {
-            this.props.navigation.navigate('ProfessionalProfile', {
-                users_email: this.props.navigation.getParam('users_email', 'email')
-            });
+        this.props.navigation.navigate('ProfessionalProfile', {
+            users_email: this.props.navigation.getParam('users_email', 'email')
+        });
     }
 
     goToPayment() {
-        this.props.navigation.navigate('Payment', {
-        source: this.state.source
-        });
+        if(this.state.price === 0) {
+            alert('Descarga realizada con exito');
+            Linking.openURL(this.state.source);
+        }
+        else {
+            this.props.navigation.navigate('Payment', {
+                source: this.state.source
+            });
+        }
     }
 
     render() {
